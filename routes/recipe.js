@@ -1,9 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const Recipe = require('../models/RecipeSchema');
+const multer = require('multer');
 
 
-router.post('/', async (req, res) => {
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/images/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname);
+    }
+});
+
+const upload = multer({ storage: storage });
+
+router.post('/', upload.single('coverImage'), async (req, res) => {
     const { title, ingredients, instructions } = req.body;
     if (!title || !ingredients || !instructions) {
         return res.status(400).json({ message: 'All fields are required' });
