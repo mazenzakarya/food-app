@@ -8,6 +8,7 @@ const connectDB = require('./config/connectionDB');
 
 connectDB();
 app.use('/api/recipes', require('./routes/recipe'));
+app.use('/api/users', require('./routes/user'));
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
